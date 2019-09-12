@@ -1,41 +1,84 @@
 import random
+import matplotlib.pyplot as plot
 
 def monkeyTypist() :
 
-    target = list("methinks it is like a weasel")
-    alphabet = list("abcdefghijklmnopqrstuvwxyz ")
+    target = "methinks it is like a weasel"
+    alphabet = "abcdefghijklmnopqrstuvwxyz "
 
     lenS = len(target)
+    lenA = len(alphabet)
 
-    bestStr = generate(lenS, alphabet)
-    bestScore = calcScore(bestStr, target)
+    scores = []
+    counter = []
+
+    count = 0
+    epoch = 0
+
+    newStr = [" "] * lenS
+
+    for i in range(lenS) :
+        newStr[i] = alphabet[random.randint(0, lenA - 1)]
+
+    bestStr = generate(target, alphabet, 0, lenS, lenA, newStr)
+    bestScore = calcScore(newStr, target, lenS)
+    count += 1
+    epoch += 1
 
     print("String\t\t\t\t\tScore")
 
     while bestScore < 100 :
-        if bestScore == 100 :
-            break
-        newStr = generate(lenS, alphabet)
-        newScore = calcScore(newStr, target)
+
+        for i in range(lenS) :
+            if newStr[i] != target[i] :
+                index = i
+                break
+        
+        newStr = generate(target, alphabet, index, lenS, lenA, newStr)
+        newScore = calcScore(newStr, target, lenS)
+
+        count += 1
+        epoch += 1
+
         if newScore > bestScore :
             bestScore = newScore
             bestStr = newStr
-        if epoch == 100000 :
-            print ("%s\t\t%d" % ("".join(bestStr), bestScore))
+            scores.append(bestScore)
+            counter.append(count)
+
+        if epoch == 100 :
+            print("%s\t\t%f\t\t%d" % ("".join(bestStr), bestScore, count))
+            scores.append(bestScore)
+            counter.append(count)
             epoch = 0
-        epoch += 1
 
-def generate(lenS, alphabet) :
-    string = []
-    for i in range(lenS) :
-        string.append(alphabet[random.randint(0, len(alphabet) - 1)])
-    return string
+        if bestScore >= 100 :
+            print("%s\t\t%f\t\t%d" % ("".join(bestStr), bestScore, count))
+            scores.append(bestScore)
+            counter.append(count)
+            break
 
-def calcScore(newStr, target) :
+        if count >= 3000 :
+            break
+    
+    plot.scatter(counter, scores, color = 'r', marker = '+')
+    plot.xlabel("Iterations")
+    plot.ylabel("Scores")
+    plot.show()
+
+def generate(target, alphabet, index, lenS, lenA, newStr) :
+    temp = list(newStr)
+    for n in range(index, lenS) :
+        if newStr[n] != target[n] :
+            temp[n] = alphabet[random.randint(0, lenA - 1)]
+            break
+    return temp
+
+def calcScore(newStr, target, lenS) :
     count = 0
-    for i in range(len(target)) :
-        if newStr[i] == target[i] :
+    for n in range(lenS) :
+        if newStr[n] == target[n] :
             count += 1
-    return (count (float) / target (float))
+    return (float(count) / float(lenS)) * 100
 
 monkeyTypist()
