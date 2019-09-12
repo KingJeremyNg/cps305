@@ -15,7 +15,7 @@ def monkeyTypist() :
     count = 0
     epoch = 0
 
-    newStr = [" "] * lenS
+    newStr = [None] * lenS
 
     for i in range(lenS) :
         newStr[i] = alphabet[random.randint(0, lenA - 1)]
@@ -67,6 +67,8 @@ def monkeyTypist() :
     plot.show()
 
 def generate(target, alphabet, index, lenS, lenA, newStr) :
+    if newStr == [] :
+        return []
     temp = list(newStr)
     for n in range(index, lenS) :
         if newStr[n] != target[n] :
@@ -75,6 +77,8 @@ def generate(target, alphabet, index, lenS, lenA, newStr) :
     return temp
 
 def calcScore(newStr, target, lenS) :
+    if newStr == [] :
+        return 100
     count = 0
     for n in range(lenS) :
         if newStr[n] == target[n] :
