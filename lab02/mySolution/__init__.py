@@ -2,26 +2,27 @@ import matplotlib.pyplot as plot
 import timeit
 import random
 
-def getUpdate() :
+def getUpdateTime() :
     timeGet = []
     timeUpdate = []
-    number = []
-    size = 1000000
+    count = []
+    size = 10000
 
-    for i in range(size) :
-        dic = {x: None for x in range(i)}
-        rand = random.randrange(size)
+    for i in range(1, size) :
+        dic = {x: random.randrange(size) for x in range(i)}
 
-        if i % 10000 :
-            timeGet.append(timeit.Timer("dic[%d]" % i,"from __main__ import dic"))
-            timeUpdate.append(timeit.Timer("dic[%d] = random.randrange(size)" % i,"from __main__ import random, dic"))
-            number.append(i)
+        if i % 100 == 0:
+            timeGet.append(timeit.Timer("dic.get('x')"))
+            timeUpdate.append(timeit.Timer("dic.update(%d, random.randrange(size))" % i ,"from __main__ import random"))
+            count.append(i)
 
-    plot.scatter(number, timeGet)
-    plot.scatter(number, timeUpdate)
+    plot.scatter(count, timeGet, color = 'r', marker = '+')
+    plot.scatter(count, timeUpdate, color = 'b', marker = '+')
     plot.xlabel("Size")
     plot.ylabel("Time")
     plot.show()
 
-def delete() :
+def deleteTime() :
     ok = 0
+
+getUpdateTime()
