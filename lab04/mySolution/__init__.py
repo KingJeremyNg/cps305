@@ -1,0 +1,69 @@
+import turtle
+import random
+
+def tree(branchLen,t):
+    if branchLen > 5:
+        if branchLen > 45 :
+            t.pencolor("brown")
+        elif branchLen > 15 :
+            t.pencolor("green")
+        else :
+            t.pencolor("lightgreen")
+
+        t.pensize(branchLen / 10)
+
+        rand = random.randint(15, 45)
+        t.forward(branchLen)
+        t.right(rand)
+
+        randLen = random.randint(5, 15)
+        tree(branchLen - randLen, t)
+        t.left(rand * 2)
+
+        randLen = random.randint(5, 15)
+        tree(branchLen - randLen, t)
+        t.right(rand)
+
+        if branchLen > 45 :
+            t.pencolor("brown")
+        elif branchLen > 15 :
+            t.pencolor("green")
+        else :
+            t.pencolor("lightgreen")
+
+        t.backward(branchLen)
+
+def main() :
+    t = turtle.Turtle()
+    t._tracer(0)
+    myWin = turtle.Screen()
+    t.left(90)
+    t.up()
+    t.backward(100)
+    t.down()
+    t.color("green")
+    tree(100,t)
+    myWin.exitonclick()
+
+def power(x, n, acc) :
+    if acc == 0 :
+        acc = 1
+    if n == 0 :
+        return acc
+    else :
+        acc *= x
+        return power(x, n - 1, acc)
+
+def powerH(x ,n) :
+    if n == 1 :
+        return x
+    elif n < 1 :
+        return 1
+    else :
+        div = int(n / 2)
+        mod = int(n % 2)
+        return powerH(x, div) * powerH(x, div) * powerH(x, mod)
+
+main()
+print(power(2, 4, 0))
+print(powerH(2, 4))
