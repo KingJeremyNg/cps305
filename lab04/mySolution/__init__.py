@@ -10,6 +10,7 @@ def tree(branchLen,t):
         else :
             t.pencolor("lightgreen")
 
+        t.pendown()
         t.pensize(branchLen / 10)
 
         rand = random.randint(15, 45)
@@ -24,13 +25,7 @@ def tree(branchLen,t):
         tree(branchLen - randLen, t)
         t.right(rand)
 
-        if branchLen > 45 :
-            t.pencolor("brown")
-        elif branchLen > 15 :
-            t.pencolor("green")
-        else :
-            t.pencolor("lightgreen")
-
+        t.penup()
         t.backward(branchLen)
 
 def main() :
@@ -39,31 +34,37 @@ def main() :
     myWin = turtle.Screen()
     t.left(90)
     t.up()
-    t.backward(100)
+    t.backward(350)
     t.down()
     t.color("green")
-    tree(100,t)
+    tree(120,t)
     myWin.exitonclick()
 
-def power(x, n, acc) :
-    if acc == 0 :
-        acc = 1
+def power(x, n, acc = 1) :
     if n == 0 :
         return acc
+    elif n < 0 :
+        return "Invalid input"
     else :
         acc *= x
         return power(x, n - 1, acc)
 
 def powerH(x ,n) :
-    if n == 1 :
+    if n < 0 :
+        return "Invalid input"
+    elif n == 1 :
         return x
-    elif n < 1 :
+    elif n == 0 :
         return 1
     else :
         div = int(n / 2)
         mod = int(n % 2)
         return powerH(x, div) * powerH(x, div) * powerH(x, mod)
 
-main()
-print(power(2, 4, 0))
-print(powerH(2, 4))
+def bCoefficient(n, k) :
+    if k > n or k < 0:
+        return "Invalid input"
+    elif k == 0 or k == n:
+        return 1
+    else :
+        return bCoefficient(n - 1, k) + bCoefficient(n - 1, k - 1)
